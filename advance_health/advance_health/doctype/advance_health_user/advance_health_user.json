@@ -51,6 +51,7 @@
    "fieldname": "email",
    "fieldtype": "Data",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Email",
    "options": "Email",
    "reqd": 1,
@@ -115,6 +116,7 @@
   {
    "fieldname": "full_name",
    "fieldtype": "Data",
+   "in_standard_filter": 1,
    "label": "Full Name",
    "read_only": 1
   },
@@ -183,7 +185,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-12-30 15:45:52.219816",
+ "modified": "2024-01-03 12:22:09.922411",
  "modified_by": "Administrator",
  "module": "Advance Health",
  "name": "Advance Health User",
