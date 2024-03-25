@@ -108,7 +108,16 @@ def close_todo(todo_name):
         
         
        
+import frappe
+from frappe import _
+
+
+import frappe
+
 @frappe.whitelist()
+def sync_lead_records_background():
+    frappe.enqueue("advance_health.custom_script.sync_lead_records", queue='long')
+
 def sync_lead_records():
     try:
         # Fetch all lead records
@@ -124,10 +133,9 @@ def sync_lead_records():
 
         return True
     except Exception as e:
-        frappe.log_error(frappe.get_traceback(), _('Sync Lead Records Error'))
+        frappe.log_error(frappe.get_traceback(), frappe._('Sync Lead Records Error'))
         return False
-   
-   
+
    
    
    
@@ -163,6 +171,10 @@ def update_todo(todo_name, updated_values):
 
 
 @frappe.whitelist()
+def check_followed_up_leads_que():
+    frappe.enqueue("advance_health.custom_script.check_followed_up_leads", queue='long')
+
+@frappe.whitelist()
 def check_followed_up_leads():
     try:
         # Fetch all leads
@@ -182,12 +194,94 @@ def check_followed_up_leads():
 
 
 
+import frappe
+from frappe.utils import getdate, add_days
+
 @frappe.whitelist()
-def update_followed_up(lead_id):
-    lead = frappe.get_doc("Lead", lead_id)
+def create_lead_follow_up_for_leads_without_follow_up_background():
+    try:
+        frappe.enqueue("advance_health.custom_script.create_lead_follow_up_for_leads_without_follow_up", queue='long')
+        return True
+    except Exception as e:
+        frappe.log_error(f"Failed to add task to the queue: {str(e)}")
+        return False
+
+@frappe.whitelist()
+def create_lead_follow_up_for_leads_without_follow_up():
+    """
+    Create Lead Follow Up records for leads without any follow-up records.
+    """
+    try:
+        leads_without_follow_up = frappe.get_all('Lead', filters={'name': ('not in', get_leads_with_follow_up_ids()), 'status': 'Lead'},
+                                                 fields=['name', 'custom_assign_to'])
+        tomorrow_date = add_days(getdate(), 1)
+        for lead in leads_without_follow_up:
+            lead_id = lead['name']
+            custom_assign_to = lead['custom_assign_to']
+            if create_lead_follow_up(lead_id, tomorrow_date, custom_assign_to):
+                continue
+            else:
+                return False
+
+        return True
+    except Exception as e:
+        frappe.log_error(f"Failed to create Lead Follow Up records: {str(e)}")
+        return False
+
+def get_leads_with_follow_up_ids():
+    """
+    Get lead IDs with existing follow-up records.
+    """
+    leads_with_follow_up = frappe.get_all('Lead Follow Up', filters={'lead_id': ('!=', '')}, fields=['lead_id'])
+    return [lead['lead_id'] for lead in leads_with_follow_up]
+
+def create_lead_follow_up(lead_id, follow_up_date, custom_assign_to):
+    """
+    Create Lead Follow Up record for the given lead ID.
+    """
+    try:
+        lead_follow_up = frappe.new_doc('Lead Follow Up')
+        lead_follow_up.lead_id = lead_id
+        lead_follow_up.date = follow_up_date
+        lead_follow_up.custom_category = 'Call'
+        lead_follow_up.description = 'Call'
+        lead_follow_up.save(ignore_permissions=True)
+
+        # Share Lead Follow Up with custom_assign_to
+        if custom_assign_to:
+            frappe.share.add('Lead Follow Up', lead_follow_up.name, custom_assign_to, read=1, write=1)
+        return True
+    except Exception as e:
+        frappe.log_error(f"Failed to create Lead Follow Up for lead {lead_id}: {str(e)}")
+        return False
+
+
+
+
+
+import frappe
+
+@frappe.whitelist()
+def get_leads_by_last_10_digits():
+    # Fetch all leads
+    leads = frappe.get_all("Lead", fields=["name", "mobile_no"])
     
-    if lead and lead.followed_up != 1:
-        lead.followed_up = 1
-        lead.save(ignore_permissions=True)  # Update the lead's followed_up field
-        frappe.msgprint(_("Lead {0} marked as followed up.").format(lead_id))
+    # Dictionary to store matching leads
+    matching_leads = {}
+    
+    # Iterate through leads
+    for lead in leads:
+        mobile_no = lead.get("mobile_no")
+        if mobile_no and len(mobile_no) >= 10:  # Ensure mobile number is at least 10 digits long
+            last_10_digits = mobile_no[-10:]
+            if last_10_digits in matching_leads:
+                matching_leads[last_10_digits].append(lead)
+            else:
+                matching_leads[last_10_digits] = [lead]
+
+    # Filter leads with more than one match
+    matching_leads_multiple = {mob: leads for mob, leads in matching_leads.items() if len(leads) > 1}
+
+    return matching_leads_multiple
+
 
