@@ -1,0 +1,142 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:AH-ADMISSION-{##}",
+ "creation": "2024-03-28 12:12:46.494666",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "customer_id",
+  "from_date",
+  "to_date",
+  "service",
+  "name_of_applicant",
+  "fathers_name",
+  "department",
+  "contact_no",
+  "id_proof",
+  "column_break_vfso",
+  "date",
+  "age",
+  "date_of_birth",
+  "permanant_address",
+  "email_id"
+ ],
+ "fields": [
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "name_of_applicant",
+   "fieldtype": "Data",
+   "label": "Name Of Applicant"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "fathers_name",
+   "fieldtype": "Data",
+   "label": "Father's Name"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "department",
+   "fieldtype": "Data",
+   "label": "Department"
+  },
+  {
+   "fieldname": "contact_no",
+   "fieldtype": "Data",
+   "label": "Contact No "
+  },
+  {
+   "fieldname": "id_proof",
+   "fieldtype": "Attach Image",
+   "label": "Id Proof"
+  },
+  {
+   "fieldname": "column_break_vfso",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "default": "Today",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "age",
+   "fieldtype": "Data",
+   "label": "Age"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "date_of_birth",
+   "fieldtype": "Data",
+   "label": "Date Of Birth"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "permanant_address",
+   "fieldtype": "Small Text",
+   "label": "Permanant Address"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "service",
+   "fieldtype": "Link",
+   "label": "Service",
+   "options": "Item"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "customer_id",
+   "fieldtype": "Link",
+   "label": "Customer ID",
+   "options": "Customer"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "email_id",
+   "fieldtype": "Data",
+   "label": "Email Id"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-03-29 10:16:41.708259",
+ "modified_by": "Administrator",
+ "module": "Advance Health",
+ "name": "Admission Form",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

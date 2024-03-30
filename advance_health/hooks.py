@@ -1,9 +1,13 @@
+# App details
 app_name = "advance_health"
 app_title = "Advance Health"
 app_publisher = "pankaj@360ithub.com"
 app_description = "Advance Health"
 app_email = "pankaj@360ithub.com"
-app_license = "mit"
+app_license = "MIT"
+
+
+
 # required_apps = []
 
 # Includes in <head>
