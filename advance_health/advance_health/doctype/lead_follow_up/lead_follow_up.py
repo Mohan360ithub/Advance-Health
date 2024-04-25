@@ -14,3 +14,4 @@ class LeadFollowUp(Document):
             lead.save(ignore_permissions=True)  # Update the lead's followed_up field
             #frappe.msgprint(_("Lead {0} marked as followed up.").format(lead_id))
 
+

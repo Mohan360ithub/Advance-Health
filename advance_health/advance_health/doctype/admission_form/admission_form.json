@@ -2,51 +2,93 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "format:AH-ADMISSION-{##}",
- "creation": "2024-03-28 12:12:46.494666",
+ "creation": "2024-04-10 11:29:52.398706",
+ "default_view": "List",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "customer_id",
+  "column_break_hnjh",
+  "date",
+  "please_fill_the_below_details_section",
+  "email_id",
+  "contact_no",
   "from_date",
   "to_date",
   "service",
+  "permanent_address",
+  "column_break_vfso",
   "name_of_applicant",
   "fathers_name",
-  "department",
-  "contact_no",
-  "id_proof",
-  "column_break_vfso",
-  "date",
-  "age",
   "date_of_birth",
-  "permanant_address",
-  "email_id"
+  "age",
+  "id_proof",
+  "department",
+  "before_treatment_details_tab",
+  "custom_before_treatment",
+  "custom_after_treatment",
+  "after_treatment"
  ],
  "fields": [
   {
-   "allow_in_quick_entry": 1,
+   "fieldname": "customer_id",
+   "fieldtype": "Link",
+   "label": "Customer ID",
+   "options": "Customer"
+  },
+  {
+   "default": "Today",
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fetch_from": "customer_id.mobile_no",
+   "fieldname": "contact_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Contact No ",
+   "reqd": 1
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "service",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Service",
+   "options": "Item"
+  },
+  {
    "fieldname": "name_of_applicant",
    "fieldtype": "Data",
-   "label": "Name Of Applicant"
+   "label": "Name Of Applicant",
+   "reqd": 1
   },
   {
-   "allow_in_quick_entry": 1,
    "fieldname": "fathers_name",
    "fieldtype": "Data",
-   "label": "Father's Name"
+   "label": "Father's Name",
+   "reqd": 1
   },
   {
-   "allow_in_quick_entry": 1,
    "fieldname": "department",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Department"
   },
   {
-   "fieldname": "contact_no",
-   "fieldtype": "Data",
-   "label": "Contact No "
-  },
-  {
+   "allow_in_quick_entry": 1,
    "fieldname": "id_proof",
    "fieldtype": "Attach Image",
    "label": "Id Proof"
@@ -56,66 +98,63 @@
    "fieldtype": "Column Break"
   },
   {
-   "allow_in_quick_entry": 1,
-   "default": "Today",
-   "fieldname": "date",
-   "fieldtype": "Date",
-   "label": "Date"
+   "fieldname": "email_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Email Id",
+   "reqd": 1
   },
   {
-   "allow_in_quick_entry": 1,
    "fieldname": "age",
-   "fieldtype": "Data",
+   "fieldtype": "Int",
    "label": "Age"
   },
   {
-   "allow_in_quick_entry": 1,
    "fieldname": "date_of_birth",
-   "fieldtype": "Data",
-   "label": "Date Of Birth"
+   "fieldtype": "Date",
+   "label": "Date Of Birth",
+   "reqd": 1
   },
   {
-   "allow_in_quick_entry": 1,
-   "fieldname": "permanant_address",
+   "fieldname": "permanent_address",
    "fieldtype": "Small Text",
-   "label": "Permanant Address"
+   "label": "Permanent Address",
+   "reqd": 1
   },
   {
-   "allow_in_quick_entry": 1,
-   "fieldname": "from_date",
-   "fieldtype": "Date",
-   "label": "From Date"
+   "fieldname": "column_break_hnjh",
+   "fieldtype": "Column Break"
   },
   {
-   "allow_in_quick_entry": 1,
-   "fieldname": "to_date",
-   "fieldtype": "Date",
-   "label": "To Date"
+   "fieldname": "please_fill_the_below_details_section",
+   "fieldtype": "Section Break",
+   "label": "Please Fill The Below Details"
   },
   {
-   "allow_in_quick_entry": 1,
-   "fieldname": "service",
-   "fieldtype": "Link",
-   "label": "Service",
-   "options": "Item"
+   "fieldname": "before_treatment_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Before Treatment Details"
   },
   {
-   "allow_in_quick_entry": 1,
-   "fieldname": "customer_id",
-   "fieldtype": "Link",
-   "label": "Customer ID",
-   "options": "Customer"
+   "fieldname": "custom_before_treatment",
+   "fieldtype": "HTML",
+   "label": "Before Treatment"
   },
   {
-   "allow_in_quick_entry": 1,
-   "fieldname": "email_id",
-   "fieldtype": "Data",
-   "label": "Email Id"
+   "fieldname": "custom_after_treatment",
+   "fieldtype": "Tab Break",
+   "label": "After Treatment Details"
+  },
+  {
+   "fieldname": "after_treatment",
+   "fieldtype": "HTML",
+   "label": "After Treatment"
   }
  ],
+ "image_field": "id_proof",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-03-29 10:16:41.708259",
+ "modified": "2024-04-23 11:31:21.810840",
  "modified_by": "Administrator",
  "module": "Advance Health",
  "name": "Admission Form",
@@ -135,7 +174,6 @@
    "write": 1
   }
  ],
- "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
