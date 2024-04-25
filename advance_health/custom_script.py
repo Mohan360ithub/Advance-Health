@@ -285,3 +285,163 @@ def get_leads_by_last_10_digits():
     return matching_leads_multiple
 
 
+
+
+
+import frappe
+ 
+@frappe.whitelist()
+def get_payment_entries(customer, invoice_name):
+    # Fetch payment entries based on customer and invoice name
+    payment_entries = frappe.get_list("Payment Entry",
+                                      filters={"party_type": "Customer", "party": customer, "reference_doctype": "Sales Invoice", "reference_name": invoice_name},
+                                      fields=["name", "posting_date", "paid_amount", "mode_of_payment", "references.allocated_amount", "references.outstanding_amount", "references.payment_term", "references.total_allocated_amount"])
+ 
+    # Return the payment entries as JSON string
+    return payment_entries
+ 
+
+
+
+
+
+
+@frappe.whitelist()
+def reallocate_lead(lead_name, custom_assign_to):
+    # print(custom_assign_to)
+    res2=remove_lead_share(lead_name)
+    if custom_assign_to:
+        res1=share_lead_with_user(lead_name, custom_assign_to)
+    if res2:
+        if custom_assign_to and res1:
+            return "Success"
+        elif custom_assign_to:
+            return "Failed"
+        else:
+            # print("Success")
+            return "Success"
+        
+@frappe.whitelist()
+def share_lead_with_user(lead_name, user):
+    frappe.share.add('Lead', lead_name, user, read=1, write=1)
+    return "Success"
+ 
+@frappe.whitelist()
+def remove_lead_share(lead_name):
+    shares = frappe.share.get_users("Lead", lead_name)
+    # print("Hello",shares,lead_name)
+    for sh in shares:
+        frappe.share.remove("Lead", lead_name, sh.user)
+        # print(sh.user)
+    return "Success"
+ 
+#lead Follow Up
+@frappe.whitelist()
+def reallocate_lead_follow_up(lead_name, allocated_to):
+    # print(allocated_to)
+    res2=remove_lead_sharing(lead_name)
+    if allocated_to:
+        res1=share_lead_follow_up_with_user(lead_name, allocated_to)
+    if res2:
+        if allocated_to and res1:
+            return "Success"
+        elif allocated_to:
+            return "Failed"
+        else:
+            # print("Success")
+            return "Success"
+ 
+@frappe.whitelist()
+def share_lead_follow_up_with_user(lead_name, allocated_to):
+    frappe.share.add('Lead Follow Up', lead_name, allocated_to, read=1, write=1)
+    return "Success"
+ 
+ 
+@frappe.whitelist()
+def remove_lead_sharing(lead_name):
+    
+    shares = frappe.share.get_users("Lead Follow Up", lead_name)
+    # print("Hello",shares,lead_name)
+    for sh in shares:
+        frappe.share.remove("Lead Follow Up", lead_name, sh.user)
+        # print(sh.user)
+    return "Success"
+
+
+
+
+@frappe.whitelist()
+def send_admission_form(customer_id, email_id, mobile_no):
+    
+    # Constructing the message with the link including the customer ID, custom_customer_email, and email_id
+    admission_form_link = f"/admission-form/new?customer_id={customer_id}&email_id={email_id}&contact_no={mobile_no}"
+    message = f"""<html>
+            <body>
+                <p>Thank you for choosing Advanced Health. We appreciate your interest in our services.</p>
+                <p>To proceed with your admission, please fill out the <a href="{admission_form_link}">Admission Form</a> with accurate information. Your cooperation in providing detailed and precise information will enable us to better understand your needs and provide you with the best possible care.</p>
+                <p>If you encounter any difficulties or have any questions regarding the form, please don't hesitate to contact us.</p>
+                <p>We look forward to welcoming you as part of the Advanced Health community.</p>
+                <p>Best regards,<br> Advanced Health Team</p>
+            </body>
+            </html>"""
+ 
+    
+    # Sample code to send email
+    subject = "Admission Form"
+    recipients = [email_id]
+    
+    
+    frappe.sendmail(
+        recipients=recipients,
+        subject=subject,
+        message=message,
+        reference_doctype='Customer',  # Adjust if necessary
+        reference_name=customer_id  # Adjust if necessary
+    )
+ 
+    # You can add more logic here as per your requirements
+ 
+    return _("Admission form sent successfully.")
+ 
+ 
+ 
+ 
+ 
+@frappe.whitelist(allow_guest=True)
+def validate_overlap(customer_id, from_date, to_date):
+    existing_forms = frappe.get_all("Admission Form", filters={
+        "customer_id": customer_id,
+        "from_date": ("<=", to_date),
+        "to_date": (">=", from_date)
+    })
+ 
+    if existing_forms:
+        return "We already have a form submitted for the same time slot you're requesting."
+ 
+    return None
+ 
+@frappe.whitelist()
+def validate_duplicate_before_form(customer_id, form_id):
+    # Check if there's already a form with the same customer_id and form_id
+    existing_form = frappe.db.exists("Before starting the Treatment", {"customer_id": customer_id, "form_id": form_id})
+ 
+    if existing_form:
+        return "A form has been already exists for this customer ."
+    else:
+        return None  # No duplicate form found, validation passed
+ 
+@frappe.whitelist()
+def validate_duplicate_after_form(customer_id, form_id):
+    # Check if there's already a form with the same customer_id and form_id
+    existing_form = frappe.db.exists("Before starting the Treatment", {"customer_id": customer_id, "form_id": form_id})
+ 
+    if existing_form:
+        return "A form has been already exists for this customer ."
+    else:
+        return None  # No duplicate form found, validation passed
+    
+    
+    
+    
+    
+

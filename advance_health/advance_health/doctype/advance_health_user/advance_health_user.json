@@ -29,7 +29,9 @@
   "advance_health_counceller",
   "column_break_awnr",
   "advance_health_front_desk",
-  "advance_health_digital_team"
+  "advance_health_digital_team",
+  "section_break_xeud",
+  "ah_roles"
  ],
  "fields": [
   {
@@ -123,6 +125,7 @@
   {
    "fieldname": "roles_section",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Roles"
   },
   {
@@ -181,11 +184,21 @@
    "fieldname": "enabled",
    "fieldtype": "Check",
    "label": "Enabled"
+  },
+  {
+   "fieldname": "section_break_xeud",
+   "fieldtype": "Section Break",
+   "label": "Roles"
+  },
+  {
+   "fieldname": "ah_roles",
+   "fieldtype": "HTML",
+   "label": "AH Roles"
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2024-01-03 12:22:09.922411",
+ "modified": "2024-04-10 17:23:23.427912",
  "modified_by": "Administrator",
  "module": "Advance Health",
  "name": "Advance Health User",
@@ -201,6 +214,23 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "import": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Advance Health Admin",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],

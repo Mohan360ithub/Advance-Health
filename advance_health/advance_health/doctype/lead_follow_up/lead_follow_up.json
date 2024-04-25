@@ -17,8 +17,10 @@
   "allocated_to",
   "description_section",
   "description",
-  "column_break_gqlj",
   "lead_id",
+  "assigned_to_test",
+  "owner_test",
+  "column_break_gqlj",
   "lead_name",
   "mobile_no",
   "assigned_by",
@@ -142,11 +144,23 @@
    "fieldname": "mobile_no",
    "fieldtype": "Data",
    "label": "Mobile No"
+  },
+  {
+   "fetch_from": "lead_id.custom_assign_to",
+   "fieldname": "assigned_to_test",
+   "fieldtype": "Data",
+   "label": "assigned to test"
+  },
+  {
+   "fetch_from": "lead_id.lead_owner",
+   "fieldname": "owner_test",
+   "fieldtype": "Data",
+   "label": "owner test"
   }
  ],
  "icon": "fa fa-check",
  "links": [],
- "modified": "2024-02-14 17:19:09.273852",
+ "modified": "2024-04-12 09:36:20.212616",
  "modified_by": "Administrator",
  "module": "Advance Health",
  "name": "Lead Follow Up",

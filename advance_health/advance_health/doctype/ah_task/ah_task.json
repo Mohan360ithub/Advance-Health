@@ -119,8 +119,7 @@
    "fieldtype": "Date",
    "label": "Expected Start Date",
    "oldfieldname": "exp_start_date",
-   "oldfieldtype": "Date",
-   "reqd": 1
+   "oldfieldtype": "Date"
   },
   {
    "default": "0",
@@ -201,7 +200,7 @@
  "icon": "fa fa-check",
  "links": [],
  "max_attachments": 5,
- "modified": "2024-03-27 17:45:00.489886",
+ "modified": "2024-04-06 17:53:02.258218",
  "modified_by": "Administrator",
  "module": "Advance Health",
  "name": "AH Task",
