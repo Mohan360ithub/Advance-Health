@@ -337,13 +337,24 @@ def remove_lead_share(lead_name):
  
 #lead Follow Up
 @frappe.whitelist()
-def reallocate_lead_follow_up(lead_name, allocated_to):
+def reallocate_lead_follow_up(lead_name, allocated_to,lead_id):
     # print(allocated_to)
     res2=remove_lead_sharing(lead_name)
+    # res3=remove_lead_sharing1(lead_id)
     if allocated_to:
         res1=share_lead_follow_up_with_user(lead_name, allocated_to)
+        res4=share_lead_follow_up_with_user1(lead_id, allocated_to)
     if res2:
         if allocated_to and res1:
+            return "Success"
+        elif allocated_to:
+            return "Failed"
+        else:
+            # print("Success")
+            return "Success"
+            
+    if res3:
+        if allocated_to and res4:
             return "Success"
         elif allocated_to:
             return "Failed"
@@ -356,6 +367,11 @@ def share_lead_follow_up_with_user(lead_name, allocated_to):
     frappe.share.add('Lead Follow Up', lead_name, allocated_to, read=1, write=1)
     return "Success"
  
+@frappe.whitelist()
+def share_lead_follow_up_with_user1(lead_id, allocated_to):
+    frappe.share.add('Lead', lead_id, allocated_to, read=1, write=1)
+    return "Success"
+ 
  
 @frappe.whitelist()
 def remove_lead_sharing(lead_name):
@@ -366,12 +382,22 @@ def remove_lead_sharing(lead_name):
         frappe.share.remove("Lead Follow Up", lead_name, sh.user)
         # print(sh.user)
     return "Success"
+    
+@frappe.whitelist()
+def remove_lead_sharing1(lead_id):
+    
+    shares = frappe.share.get_users("Lead", lead_id)
+    # print("Hello",shares,lead_name)
+    for sh in shares:
+        frappe.share.remove("Lead", lead_id, sh.user)
+        # print(sh.user)
+    return "Success"
 
 
 
 
 @frappe.whitelist()
-def send_admission_form(customer_id, email_id, mobile_no):
+def send_admission_form(customer_id, email_id, mobile_no=None):
     
     # Constructing the message with the link including the customer ID, custom_customer_email, and email_id
     admission_form_link = f"/admission-form/new?customer_id={customer_id}&email_id={email_id}&contact_no={mobile_no}"
@@ -381,7 +407,7 @@ def send_admission_form(customer_id, email_id, mobile_no):
                 <p>To proceed with your admission, please fill out the <a href="{admission_form_link}">Admission Form</a> with accurate information. Your cooperation in providing detailed and precise information will enable us to better understand your needs and provide you with the best possible care.</p>
                 <p>If you encounter any difficulties or have any questions regarding the form, please don't hesitate to contact us.</p>
                 <p>We look forward to welcoming you as part of the Advanced Health community.</p>
-                <p>Best regards,<br> Advanced Health Team</p>
+                <p>Best regards,<br> drravi@idealcure4u.com,<br> 9373101813,<br> Advanced Health Team</p>
             </body>
             </html>"""
  
