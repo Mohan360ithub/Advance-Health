@@ -306,7 +306,7 @@ def get_payment_entries(customer, invoice_name):
 
 
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def reallocate_lead(lead_name, custom_assign_to):
     # print(custom_assign_to)
     res2=remove_lead_share(lead_name)
@@ -321,12 +321,12 @@ def reallocate_lead(lead_name, custom_assign_to):
             # print("Success")
             return "Success"
         
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def share_lead_with_user(lead_name, user):
     frappe.share.add('Lead', lead_name, user, read=1, write=1)
     return "Success"
  
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def remove_lead_share(lead_name):
     shares = frappe.share.get_users("Lead", lead_name)
     # print("Hello",shares,lead_name)
@@ -336,64 +336,51 @@ def remove_lead_share(lead_name):
     return "Success"
  
 #lead Follow Up
-@frappe.whitelist()
-def reallocate_lead_follow_up(lead_name, allocated_to,lead_id):
-    # print(allocated_to)
-    res2=remove_lead_sharing(lead_name)
-    # res3=remove_lead_sharing1(lead_id)
+import frappe
+
+@frappe.whitelist(allow_guest=True)
+def reallocate_lead_follow_up(lead_name, allocated_to, lead_id):
+    # Remove existing lead sharing
+    res2 = remove_lead_sharing(lead_name)
+    # res3 = remove_lead_sharing1(lead_id)
+
     if allocated_to:
-        res1=share_lead_follow_up_with_user(lead_name, allocated_to)
-        res4=share_lead_follow_up_with_user1(lead_id, allocated_to)
-    if res2:
-        if allocated_to and res1:
+        # Share lead follow-up with the new user
+        res1 = share_lead_follow_up_with_user(lead_name, allocated_to)
+        res4 = share_lead_follow_up_with_user1(lead_id, allocated_to)
+
+        if res2 and res1:
             return "Success"
         elif allocated_to:
             return "Failed"
         else:
-            # print("Success")
             return "Success"
-            
-    if res3:
-        if allocated_to and res4:
-            return "Success"
-        elif allocated_to:
-            return "Failed"
-        else:
-            # print("Success")
-            return "Success"
- 
+    else:
+        return "Success" if res2 else "Failed"
+
 @frappe.whitelist()
 def share_lead_follow_up_with_user(lead_name, allocated_to):
     frappe.share.add('Lead Follow Up', lead_name, allocated_to, read=1, write=1)
     return "Success"
- 
+
 @frappe.whitelist()
 def share_lead_follow_up_with_user1(lead_id, allocated_to):
     frappe.share.add('Lead', lead_id, allocated_to, read=1, write=1)
     return "Success"
- 
- 
-@frappe.whitelist()
+
+@frappe.whitelist(allow_guest=True)
 def remove_lead_sharing(lead_name):
-    
     shares = frappe.share.get_users("Lead Follow Up", lead_name)
-    # print("Hello",shares,lead_name)
     for sh in shares:
         frappe.share.remove("Lead Follow Up", lead_name, sh.user)
-        # print(sh.user)
     return "Success"
-    
-@frappe.whitelist()
+
+@frappe.whitelist(allow_guest=True)
 def remove_lead_sharing1(lead_id):
-    
     shares = frappe.share.get_users("Lead", lead_id)
-    # print("Hello",shares,lead_name)
     for sh in shares:
         frappe.share.remove("Lead", lead_id, sh.user)
-        # print(sh.user)
     return "Success"
-
-
 
 
 @frappe.whitelist()

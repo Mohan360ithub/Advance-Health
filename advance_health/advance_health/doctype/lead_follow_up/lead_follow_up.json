@@ -160,7 +160,7 @@
  ],
  "icon": "fa fa-check",
  "links": [],
- "modified": "2024-04-12 09:36:20.212616",
+ "modified": "2024-05-17 15:23:39.602595",
  "modified_by": "Administrator",
  "module": "Advance Health",
  "name": "Lead Follow Up",
@@ -187,6 +187,18 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Advance Health CRM",
    "share": 1,
    "write": 1
   }
