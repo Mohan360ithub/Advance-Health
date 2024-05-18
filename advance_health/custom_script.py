@@ -1,4 +1,4 @@
-import frappe
+import frappe,json
 
 @frappe.whitelist()
 def share_lead_with_user(lead_name, user):
@@ -308,33 +308,71 @@ def get_payment_entries(customer, invoice_name):
 
 @frappe.whitelist(allow_guest=True)
 def reallocate_lead(lead_name, custom_assign_to):
-    # print(custom_assign_to)
-    res2=remove_lead_share(lead_name)
-    if custom_assign_to:
-        res1=share_lead_with_user(lead_name, custom_assign_to)
-    if res2:
-        if custom_assign_to and res1:
-            return "Success"
-        elif custom_assign_to:
-            return "Failed"
-        else:
-            # print("Success")
-            return "Success"
-        
+    custom_assign_to = json.loads(custom_assign_to)
+    print(custom_assign_to)
+    res2 = remove_lead_share(lead_name)  # Remove any existing lead shares
+    res3 = remove_lead_follow_up_share(lead_name)  # Remove any existing lead follow-up shares
+    results = []
+    # custom_assign_to=custom_assign_to.split("")
+    print(type(custom_assign_to))
+    print(list(custom_assign_to))
+    for email in custom_assign_to:
+        # Extract user ID from email address
+        user_id = email.split(',')[0]
+
+        # Share lead with the specified user
+        res1 = share_lead_with_user1(lead_name, user_id)
+
+        # If sharing lead was successful
+        if res1:
+            # Share lead follow-up records with the specified user
+            res3 = share_lead_follow_up_with_user12(lead_name, user_id)
+            results.append(res3)
+
+    # Check the results and return appropriate message
+    if all(results):
+        return "Success"
+    else:
+        return "Failed"
+
+
 @frappe.whitelist(allow_guest=True)
-def share_lead_with_user(lead_name, user):
+def share_lead_with_user1(lead_name, user):
     frappe.share.add('Lead', lead_name, user, read=1, write=1)
     return "Success"
+
+@frappe.whitelist(allow_guest=True)
+def share_lead_follow_up_with_user12(lead_name, assigned_user):
+    # Fetch all Lead Follow Up records associated with the given lead_name
+    lead_follow_up_records = frappe.get_all("Lead Follow Up", filters={"lead_id": lead_name})
+    
+    # Share each Lead Follow Up record with the assigned user
+    for follow_up_record in lead_follow_up_records:
+        frappe.share.add('Lead Follow Up', follow_up_record.name, assigned_user, read=1, write=1)
+    
+    return "Success"
+
  
 @frappe.whitelist(allow_guest=True)
 def remove_lead_share(lead_name):
     shares = frappe.share.get_users("Lead", lead_name)
-    # print("Hello",shares,lead_name)
     for sh in shares:
         frappe.share.remove("Lead", lead_name, sh.user)
-        # print(sh.user)
     return "Success"
- 
+
+@frappe.whitelist(allow_guest=True)
+def remove_lead_follow_up_share(lead_name):
+    # Fetch all Lead Follow Up records associated with the given lead_name
+    lead_follow_up_records = frappe.get_all("Lead Follow Up", filters={"lead_id": lead_name})
+
+    # Iterate through each Lead Follow Up record and remove shares
+    for follow_up_record in lead_follow_up_records:
+        shares = frappe.share.get_users("Lead Follow Up", follow_up_record.name)
+        for sh in shares:
+            frappe.share.remove("Lead Follow Up", follow_up_record.name, sh.user)
+    
+    return "Success"
+
 #lead Follow Up
 import frappe
 
