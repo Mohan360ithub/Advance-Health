@@ -1,0 +1,37 @@
+{
+ "chart_name": "Lead Follow Up Closed Chart",
+ "chart_type": "Report",
+ "creation": "2024-05-20 15:44:03.842473",
+ "custom_options": "{\"x_field\": \"closed_by(full_name)\", \"chart_type\": \"Bar\", \"y_axis_fields\": [{\"idx\": 1, \"__islocal\": true, \"name\": \"row 1\", \"y_field\": \"closed_lead_follow_up_count\"}], \"y_fields\": [\"closed_lead_follow_up_count\"], \"colors\": [null]}",
+ "docstatus": 0,
+ "doctype": "Dashboard Chart",
+ "filters_json": "{\"from_date\":[\"2024-05-11\",\"2024-05-20\"]}",
+ "group_by_type": "Count",
+ "idx": 9,
+ "is_public": 0,
+ "is_standard": 1,
+ "modified": "2024-05-20 16:03:26.353650",
+ "modified_by": "Administrator",
+ "module": "Advance Health",
+ "name": "Lead Follow Up Closed Chart",
+ "number_of_groups": 0,
+ "owner": "Administrator",
+ "report_name": "Lead Follow Up Count Report",
+ "roles": [
+  {
+   "role": "Advance Health Admin"
+  }
+ ],
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "type": "Bar",
+ "use_report_chart": 0,
+ "x_field": "closed_by(full_name)",
+ "y_axis": [
+  {
+   "color": "#CB2929",
+   "y_field": "closed_lead_follow_up_count"
+  }
+ ]
+}

@@ -114,27 +114,42 @@ from frappe import _
 
 import frappe
 
+import frappe
+
 @frappe.whitelist()
 def sync_lead_records_background():
     frappe.enqueue("advance_health.custom_script.sync_lead_records", queue='long')
-
+# @frappe.whitelist()
 def sync_lead_records():
     try:
-        # Fetch all lead records
-        lead_records = frappe.get_all('Lead', filters={'custom_assign_to': ('is', 'set')}, fields=['name', 'custom_assign_to'])
+        # Fetch all Lead records with custom_assign_to field
+        lead_records = frappe.get_all('Lead', fields=['name'])
 
-        # Share each lead record with custom_assign_to user
+        # Iterate over each lead record
         for lead in lead_records:
-            custom_assign_to = lead.get('custom_assign_to')
+            lead_name = lead['name']
+            lead_record = frappe.get_doc('Lead', lead_name)
+            print("Lead Record:", lead_record)
 
+            # Get the custom_assign_to field
+            custom_assign_to = lead_record.get('custom_assign_to')
+            print("Custom Assign To:", custom_assign_to)
+
+            # Share the lead record with custom_assign_to users
             if custom_assign_to:
-                # Share the lead record with custom_assign_to user
-                frappe.share.add('Lead', lead.name, custom_assign_to, read=1, write=1)
+                # Iterate over each user in the list of MultiSelectUser objects
+                for user_obj in custom_assign_to:
+                    # Extract the user ID from the MultiSelectUser object
+                    user_id = user_obj.user
+                    print("Sharing with User ID:", user_id)
+                    # Share the lead record with the user ID extracted from the MultiSelectUser object
+                    frappe.share.add('Lead', lead_name, user_id, read=1, write=1, share=1)
 
         return True
     except Exception as e:
         frappe.log_error(frappe.get_traceback(), frappe._('Sync Lead Records Error'))
         return False
+
 
    
    
@@ -306,53 +321,49 @@ def get_payment_entries(customer, invoice_name):
 
 
 
+import frappe
+import json
+
+
 @frappe.whitelist(allow_guest=True)
 def reallocate_lead(lead_name, custom_assign_to):
     custom_assign_to = json.loads(custom_assign_to)
-    print(custom_assign_to)
-    res2 = remove_lead_share(lead_name)  # Remove any existing lead shares
-    res3 = remove_lead_follow_up_share(lead_name)  # Remove any existing lead follow-up shares
-    results = []
-    # custom_assign_to=custom_assign_to.split("")
-    print(type(custom_assign_to))
-    print(list(custom_assign_to))
-    for email in custom_assign_to:
-        # Extract user ID from email address
-        user_id = email.split(',')[0]
+    original_user = frappe.session.user
+    print(original_user)
+    try:
+        frappe.set_user("Administrator")
+        
+        remove_lead_share(lead_name)
+        remove_lead_follow_up_share(lead_name)
+        
+        results = []
+        for email in custom_assign_to:
+            user_id = email.split(',')[0]
 
-        # Share lead with the specified user
-        res1 = share_lead_with_user1(lead_name, user_id)
+            res1 = share_lead_with_user1(lead_name, user_id)
+            if res1 == "Success":
+                res3 = share_lead_follow_up_with_user12(lead_name, user_id)
+                results.append(res3 == "Success")
 
-        # If sharing lead was successful
-        if res1:
-            # Share lead follow-up records with the specified user
-            res3 = share_lead_follow_up_with_user12(lead_name, user_id)
-            results.append(res3)
-
-    # Check the results and return appropriate message
-    if all(results):
-        return "Success"
-    else:
-        return "Failed"
-
+        if all(results):
+            return "Success"
+        else:
+            return "Failed"
+    finally:
+        frappe.set_user('Guest')
 
 @frappe.whitelist(allow_guest=True)
 def share_lead_with_user1(lead_name, user):
-    frappe.share.add('Lead', lead_name, user, read=1, write=1)
+    frappe.share.add('Lead', lead_name, user, read=1, write=1, share=1)
     return "Success"
 
 @frappe.whitelist(allow_guest=True)
 def share_lead_follow_up_with_user12(lead_name, assigned_user):
-    # Fetch all Lead Follow Up records associated with the given lead_name
     lead_follow_up_records = frappe.get_all("Lead Follow Up", filters={"lead_id": lead_name})
-    
-    # Share each Lead Follow Up record with the assigned user
     for follow_up_record in lead_follow_up_records:
-        frappe.share.add('Lead Follow Up', follow_up_record.name, assigned_user, read=1, write=1)
-    
+        frappe.share.add('Lead Follow Up', follow_up_record.name, assigned_user, read=1, write=1, share=1)
     return "Success"
 
- 
 @frappe.whitelist(allow_guest=True)
 def remove_lead_share(lead_name):
     shares = frappe.share.get_users("Lead", lead_name)
@@ -362,64 +373,12 @@ def remove_lead_share(lead_name):
 
 @frappe.whitelist(allow_guest=True)
 def remove_lead_follow_up_share(lead_name):
-    # Fetch all Lead Follow Up records associated with the given lead_name
     lead_follow_up_records = frappe.get_all("Lead Follow Up", filters={"lead_id": lead_name})
-
-    # Iterate through each Lead Follow Up record and remove shares
     for follow_up_record in lead_follow_up_records:
         shares = frappe.share.get_users("Lead Follow Up", follow_up_record.name)
         for sh in shares:
             frappe.share.remove("Lead Follow Up", follow_up_record.name, sh.user)
-    
     return "Success"
-
-#lead Follow Up
-import frappe
-
-@frappe.whitelist(allow_guest=True)
-def reallocate_lead_follow_up(lead_name, allocated_to, lead_id):
-    # Remove existing lead sharing
-    res2 = remove_lead_sharing(lead_name)
-    # res3 = remove_lead_sharing1(lead_id)
-
-    if allocated_to:
-        # Share lead follow-up with the new user
-        res1 = share_lead_follow_up_with_user(lead_name, allocated_to)
-        res4 = share_lead_follow_up_with_user1(lead_id, allocated_to)
-
-        if res2 and res1:
-            return "Success"
-        elif allocated_to:
-            return "Failed"
-        else:
-            return "Success"
-    else:
-        return "Success" if res2 else "Failed"
-
-@frappe.whitelist()
-def share_lead_follow_up_with_user(lead_name, allocated_to):
-    frappe.share.add('Lead Follow Up', lead_name, allocated_to, read=1, write=1)
-    return "Success"
-
-@frappe.whitelist()
-def share_lead_follow_up_with_user1(lead_id, allocated_to):
-    frappe.share.add('Lead', lead_id, allocated_to, read=1, write=1)
-    return "Success"
-
-@frappe.whitelist(allow_guest=True)
-def remove_lead_sharing(lead_name):
-    shares = frappe.share.get_users("Lead Follow Up", lead_name)
-    for sh in shares:
-        frappe.share.remove("Lead Follow Up", lead_name, sh.user)
-    return "Success"
-
-@frappe.whitelist(allow_guest=True)
-def remove_lead_sharing1(lead_id):
-    shares = frappe.share.get_users("Lead", lead_id)
-    for sh in shares:
-        frappe.share.remove("Lead", lead_id, sh.user)
-    return "Success"
-
 
 @frappe.whitelist()
 def send_admission_form(customer_id, email_id, mobile_no=None):
@@ -484,7 +443,7 @@ def validate_duplicate_before_form(customer_id, form_id):
 @frappe.whitelist()
 def validate_duplicate_after_form(customer_id, form_id):
     # Check if there's already a form with the same customer_id and form_id
-    existing_form = frappe.db.exists("Before starting the Treatment", {"customer_id": customer_id, "form_id": form_id})
+    existing_form = frappe.db.exists("After the Treatment", {"customer_id": customer_id, "form_id": form_id})
  
     if existing_form:
         return "A form has been already exists for this customer ."
@@ -493,6 +452,32 @@ def validate_duplicate_after_form(customer_id, form_id):
     
     
     
-    
-    
+
+
+import frappe
+from frappe import enqueue
+
+BATCH_SIZE = 100  # Number of leads to process in each batch
+
+@frappe.whitelist()
+def enqueue_update_custom_assign_to():
+    leads = frappe.get_all('Lead', fields=['name'])
+    total_leads = len(leads)
+    for i in range(0, total_leads, BATCH_SIZE):
+        enqueue(update_custom_assign_to_batch, leads=leads[i:i + BATCH_SIZE], timeout=600)
+    return "Job enqueued"
+
+def update_custom_assign_to_batch(leads):
+    for lead in leads:
+        share_user_ids = frappe.get_all('DocShare', filters={'share_doctype': 'Lead', 'share_name': lead['name']}, fields=['user'])
+        user_ids = [user['user'] for user in share_user_ids]
+        update_custom_assign_to_field(lead['name'], user_ids)
+
+def update_custom_assign_to_field(lead_name, user_ids):
+    lead_doc = frappe.get_doc('Lead', lead_name)
+    lead_doc.custom_assign_to = []
+    for user_id in user_ids:
+        lead_doc.append('custom_assign_to', {'user': user_id})
+    lead_doc.save()
+
 

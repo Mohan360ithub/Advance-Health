@@ -43,7 +43,7 @@ class AdmissionForm(Document):
  
  
     @frappe.whitelist()
-    def send_email_before_create(self):
+    def send_email_before_create(self,email):
         # Retrieve the customer_name and mobile number from the Customer doctype
         customer_name = frappe.get_value("Customer", self.customer_id, "customer_name")
         mobile_no = frappe.get_value("Customer", self.customer_id, "mobile_no")
@@ -65,7 +65,7 @@ class AdmissionForm(Document):
  
  
         subject = "Before Treatment Form"
-        recipients = self.email_id
+        recipients = email
         
         # Send email using Frappe's email function
         frappe.sendmail(recipients=recipients, subject=subject, message=message)
@@ -73,13 +73,13 @@ class AdmissionForm(Document):
         return "Email sent successfully."
     
     @frappe.whitelist()
-    def send_email_after_create(self):
+    def send_email_after_create(self,email):
         # Retrieve the customer_name and mobile number from the Customer doctype
         customer_name = frappe.get_value("Customer", self.customer_id, "customer_name")
         mobile_no = frappe.get_value("Customer", self.customer_id, "mobile_no")
         
         # Retrieve the URL for the After Treatment form
-        after_treatment_url = f"/after-treatment/new?customer_id={self.customer_id}&form_id={self.name}&customer_name={customer_name}&custom_contact_no={mobile_no}"
+        after_treatment_url = f"/after-the-treatment/new?customer_id={self.customer_id}&form_id={self.name}&customer_name={customer_name}&custom_contact_no={mobile_no}"
         
         # Construct the HTML message body with user details and the link to After Treatment form
         message = f"""<html>
@@ -94,7 +94,7 @@ class AdmissionForm(Document):
             </html>"""
  
         subject = "After Treatment Feed Back Form"
-        recipients = self.email_id
+        recipients = email
         
         # Send email using Frappe's email function
         frappe.sendmail(recipients=recipients, subject=subject, message=message)

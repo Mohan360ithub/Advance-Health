@@ -4,7 +4,7 @@
 import frappe,json
 from frappe.model.document import Document
 
-class AdvanceHealthUser(Document):
+class AdvancedHealthUser(Document):
     def on_submit(self):
         # Check if a core user with the same email exists
         existing_core_user = frappe.get_all("User", filters={"email": self.email})
@@ -64,12 +64,12 @@ def user_to_ahuser():
                                                 "middle_name", "gender", "enabled", "birth_date", "send_welcome_email",
                                                 "mobile_no", "new_password"])
     for core_user in core_users:
-        ah_user = frappe.get_all("Advance Health User", filters={"email": core_user.email})
+        ah_user = frappe.get_all("Advanced Health User", filters={"email": core_user.email})
         if core_user.first_name in ["Guest","Administrator","Account"]:
             continue
         elif ah_user:
             # Update existing ahUser
-            existing_ah_user = frappe.get_doc("Advance Health User", ah_user[0].name)
+            existing_ah_user = frappe.get_doc("Advanced Health User", ah_user[0].name)
             existing_ah_user.full_name = core_user.full_name
             existing_ah_user.first_name = core_user.first_name
             existing_ah_user.last_name = core_user.last_name
@@ -83,7 +83,7 @@ def user_to_ahuser():
         else:
             # Create a new ahUser if it doesn't exist
             new_ah_user_fields = {
-                "doctype": "Advance Health User",
+                "doctype": "Advanced Health User",
                 "email": core_user.email,
                 "full_name": core_user.full_name,
                 "first_name": core_user.first_name,

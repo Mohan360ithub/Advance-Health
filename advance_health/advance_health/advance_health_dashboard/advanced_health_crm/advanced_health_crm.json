@@ -1,0 +1,26 @@
+{
+ "cards": [],
+ "chart_options": "",
+ "charts": [
+  {
+   "chart": "Created Lead Follow Up Count",
+   "width": "Half"
+  },
+  {
+   "chart": "Lead Follow Up Closed Chart",
+   "width": "Half"
+  }
+ ],
+ "creation": "2024-05-20 15:43:12.627507",
+ "dashboard_name": "Advanced Health CRM",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 1,
+ "is_default": 0,
+ "is_standard": 1,
+ "modified": "2024-05-20 18:49:39.561415",
+ "modified_by": "Administrator",
+ "module": "Advance Health",
+ "name": "Advanced Health CRM",
+ "owner": "Administrator"
+}
