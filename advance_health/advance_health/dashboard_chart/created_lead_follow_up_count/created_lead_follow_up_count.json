@@ -7,10 +7,10 @@
  "doctype": "Dashboard Chart",
  "filters_json": "{\"from_date\":[\"2024-05-11\",\"2024-05-20\"]}",
  "group_by_type": "Count",
- "idx": 4,
+ "idx": 7,
  "is_public": 0,
  "is_standard": 1,
- "modified": "2024-05-20 16:03:39.170072",
+ "modified": "2024-10-26 12:39:01.481937",
  "modified_by": "Administrator",
  "module": "Advance Health",
  "name": "Created Lead Follow Up Count",
@@ -30,8 +30,12 @@
  "x_field": "created_by(full_name)",
  "y_axis": [
   {
-   "color": "#29CD42",
+   "color": "#f09797",
    "y_field": "new_lead_follow_up_count"
+  },
+  {
+   "color": "#9fe3a9",
+   "y_field": "closed_lead_follow_up_count"
   }
  ]
 }
