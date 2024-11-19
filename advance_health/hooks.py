@@ -126,13 +126,16 @@ app_license = "MIT"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-#	"*": {
-#		"on_update": "method",
-#		"on_cancel": "method",
-#		"on_trash": "method"
-#	}
-# }
+doc_events = {
+	# "*": {
+	# 	"on_update": "method",
+	# 	"on_cancel": "method",
+	# 	"on_trash": "method"
+	# },
+    "Payment Entry": {
+        "on_submit":"advance_health.custom_script.payment_entry_on_submit"
+    }
+}
 
 # Scheduled Tasks
 # ---------------

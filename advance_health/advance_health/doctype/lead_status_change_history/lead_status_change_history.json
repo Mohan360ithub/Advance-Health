@@ -27,10 +27,12 @@
    "label": "New Status"
   },
   {
+
    "fieldname": "column_break_yapj",
    "fieldtype": "Column Break"
   },
   {
+
    "default": "__user",
    "fieldname": "changed_by",
    "fieldtype": "Link",
@@ -44,6 +46,7 @@
    "fieldtype": "Datetime",
    "in_list_view": 1,
    "label": "Updated At"
+
   }
  ],
  "index_web_pages_for_search": 1,

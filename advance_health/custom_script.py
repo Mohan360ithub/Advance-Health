@@ -481,3 +481,6 @@ def update_custom_assign_to_field(lead_name, user_ids):
     lead_doc.save()
 
 
+def payment_entry_on_submit(self):
+    self.custom_submitted_by = frappe.session.user
+    self.custom_submitted_on = frappe.utils.now()
