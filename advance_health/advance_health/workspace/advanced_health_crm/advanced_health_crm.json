@@ -1,0 +1,151 @@
+{
+ "charts": [
+  {
+   "chart_name": "Lead Source",
+   "label": "Lead Source"
+  },
+  {
+   "chart_name": "Created Lead Follow Up Count",
+   "label": "Created Lead Follow Up Count"
+  }
+ ],
+ "content": "[{\"id\":\"z8QUxrKHUn\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Advanced Health CRM</span>\",\"col\":12}},{\"id\":\"08pyky_sFC\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"Ek6dFbzQuE\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Lead FollowUp List\",\"col\":5}},{\"id\":\"7ChyOJsSP4\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Lead\",\"col\":4}},{\"id\":\"1E2kmv7c7K\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Lead Lost\",\"col\":3}},{\"id\":\"nsChhl5JId\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"fQdWheeLYU\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Customers\",\"col\":4}},{\"id\":\"hfOjLmqXgJ\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Quotations\",\"col\":4}},{\"id\":\"IyY37zlgA4\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Sales Invoice\",\"col\":4}},{\"id\":\"5ulOUjddd8\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"Oa4BqGaQX2\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Advanced Health User\",\"col\":4}},{\"id\":\"uTirW87oF0\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Task Management</b></span>\",\"col\":12}},{\"id\":\"GaJOHR5REM\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"AH Task\",\"col\":4}},{\"id\":\"ZkYkeL_Qlc\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"CRM Dashboard\",\"col\":3}},{\"id\":\"3De7FUBDN-\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Lead Status</b></span>\",\"col\":12}},{\"id\":\"Vsrcqp-SOV\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Lead Overdue\",\"col\":4}},{\"id\":\"-8aG_ODF71\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Over All Lead\",\"col\":4}},{\"id\":\"ooy0qzyiRl\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Lead Open\",\"col\":4}},{\"id\":\"lM3rc4KdAp\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Lead Consultation Scheduled\",\"col\":4}},{\"id\":\"gX0I43-Smz\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Lead Follow Up\",\"col\":4}},{\"id\":\"ROOCm7sAzl\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Lead Interested\",\"col\":4}},{\"id\":\"07q1jwYUAe\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Lead Quotation\",\"col\":4}},{\"id\":\"xpvptHiAVZ\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Lead Converted\",\"col\":4}},{\"id\":\"-00EYcoUDO\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Report</b></span>\",\"col\":12}},{\"id\":\"s7wdbft3qS\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Lead Report\",\"col\":3}},{\"id\":\"zFNyrVpdUk\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Follow Up Count\",\"col\":3}},{\"id\":\"JM5z6k6qnf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SINV Report By Customer\",\"col\":3}},{\"id\":\"iskoSO1Y2G\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"AMdXQ1E8V8\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Dashboard</span>\",\"col\":12}},{\"id\":\"bg1AEF4FhP\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Lead Source\",\"col\":12}},{\"id\":\"1o8hKNDmln\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"UGMJgAZKAd\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Created Lead Follow Up Count\",\"col\":12}}]",
+ "creation": "2023-12-29 18:35:33.192408",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "read-status",
+ "idx": 1,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Advanced Health CRM",
+ "links": [],
+ "modified": "2024-11-22 17:22:40.171670",
+ "modified_by": "Administrator",
+ "module": "Advance Health",
+ "name": "Advanced Health CRM",
+ "number_cards": [
+  {
+   "label": "Over All Lead",
+   "number_card_name": "Lead"
+  },
+  {
+   "label": "Lead Consultation Scheduled",
+   "number_card_name": "Lead Consultation Scheduled"
+  },
+  {
+   "label": "Advanced Health User",
+   "number_card_name": "Advance Health User"
+  },
+  {
+   "label": "Lead Overdue",
+   "number_card_name": "Lead Overdue"
+  },
+  {
+   "label": "Lead Open",
+   "number_card_name": "Lead Open"
+  },
+  {
+   "label": "Lead FollowUp List",
+   "number_card_name": "Lead Follow Up"
+  },
+  {
+   "label": "Lead Follow Up",
+   "number_card_name": "Lead Follow Up"
+  },
+  {
+   "label": "AH Task",
+   "number_card_name": "AH Task"
+  },
+  {
+   "label": "Lead Interested",
+   "number_card_name": "Lead Interested"
+  },
+  {
+   "label": "Lead Quotation",
+   "number_card_name": "Lead Quotation"
+  },
+  {
+   "label": "Lead Lost",
+   "number_card_name": "Lead Lost"
+  },
+  {
+   "label": "Sales Invoice",
+   "number_card_name": "sales Invoice"
+  },
+  {
+   "label": "Lead Converted",
+   "number_card_name": "Lead \tConverted"
+  },
+  {
+   "label": "Customers",
+   "number_card_name": "Customer"
+  },
+  {
+   "label": "Quotations",
+   "number_card_name": "Quotation"
+  },
+  {
+   "label": "Lead",
+   "number_card_name": "Lead"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "Advance Health CRM"
+  },
+  {
+   "role": "Advance Health Admin"
+  },
+  {
+   "role": "Advance Health Accounts"
+  },
+  {
+   "role": "Advance Health Counceller"
+  },
+  {
+   "role": "Advance Health Digital Team"
+  },
+  {
+   "role": "Advance Health Front Desk"
+  }
+ ],
+ "sequence_id": 1.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "CRM Dashboard",
+   "link_to": "Advanced Health CRM",
+   "type": "Dashboard"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Lead Report",
+   "link_to": "Lead Report",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "SINV Report By Customer",
+   "link_to": "Sales Invoices Report By Customer",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Follow Up Count",
+   "link_to": "Lead Follow Up Count",
+   "type": "Report"
+  }
+ ],
+ "title": "Advanced Health CRM"
+}

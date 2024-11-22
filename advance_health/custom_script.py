@@ -479,5 +479,97 @@ def update_custom_assign_to_field(lead_name, user_ids):
     for user_id in user_ids:
         lead_doc.append('custom_assign_to', {'user': user_id})
     lead_doc.save()
+import frappe
+from frappe.utils import flt
 
+@frappe.whitelist()
+def create_sales_invoice(customer_id,quotation_id):
+    # Create a new Sales Invoice document
+    sales_invoice = frappe.new_doc('Sales Invoice')
+    sales_invoice.customer = customer_id
 
+    # Get items from Quotation (replace the hardcoded ID with dynamic input if necessary)
+    quotation = frappe.get_doc('Quotation', quotation_id)
+
+    # Add items to Sales Invoice
+    for item in quotation.items:
+        sales_invoice.append('items', {
+            'item_code': item.item_code,
+            'qty': item.qty,
+            'rate': item.rate,
+            'amount': item.amount,
+            'description': item.description,
+            'uom': item.uom
+        })
+
+    # Ensure base_write_off_amount is not None
+    sales_invoice.base_write_off_amount = flt(sales_invoice.base_write_off_amount or 0.0)
+
+    # Insert and save the document
+    sales_invoice.insert()
+    frappe.db.commit()
+
+    return sales_invoice.name
+
+import frappe
+from frappe.utils import now, add_to_date
+
+@frappe.whitelist()
+def enqueue_mark_overdue_leads():
+    """Enqueue the job to mark overdue leads."""
+    frappe.enqueue("advance_health.custom_script.mark_overdue_leads", queue="long", timeout=600)
+    return "The job to mark overdue leads has been enqueued. Check the background jobs for status."
+
+def mark_overdue_leads(batch_size=100):
+    """Background job to mark overdue leads in batches."""
+    # Define the statuses to check
+    statuses_to_check = [
+        "Lead",
+        "Contacted",
+        "Follow-Up",
+        "Consultation Scheduled",
+        "Consultation Done",
+        "Interested"
+    ]
+
+    # Get current time minus 24 hours
+    threshold_time = add_to_date(now(), hours=-24)
+
+    # Fetch leads that match the criteria
+    leads = frappe.get_all(
+        "Lead",
+        filters={
+            "status": ["in", statuses_to_check],
+            "custom_created_on": ["<", threshold_time],
+            "followed_up": 0
+        },
+        fields=["name"],
+        limit_page_length=batch_size
+    )
+
+    total_updated = 0
+
+    while leads:
+        for lead in leads:
+            lead_doc = frappe.get_doc("Lead", lead.name)
+            lead_doc.status = "Overdue"
+            lead_doc.save(ignore_permissions=True)
+
+        # Commit after each batch
+        frappe.db.commit()
+
+        total_updated += len(leads)
+
+        # Fetch next batch
+        leads = frappe.get_all(
+            "Lead",
+            filters={
+                "status": ["in", statuses_to_check],
+                "custom_created_at": ["<", threshold_time],
+                "followed_up": 0
+            },
+            fields=["name"],
+            limit_page_length=batch_size
+        )
+
+    frappe.logger().info(f"Total {total_updated} lead(s) marked as Overdue.")

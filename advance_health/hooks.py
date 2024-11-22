@@ -137,23 +137,30 @@ app_license = "MIT"
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-#	"all": [
-#		"advance_health.tasks.all"
-#	],
-#	"daily": [
-#		"advance_health.tasks.daily"
-#	],
-#	"hourly": [
-#		"advance_health.tasks.hourly"
-#	],
-#	"weekly": [
-#		"advance_health.tasks.weekly"
-#	],
-#	"monthly": [
-#		"advance_health.tasks.monthly"
-#	],
-# }
+scheduler_events = {
+    "cron":{
+    	"0 0 * * *": [
+            "advance_health.custom_script.enqueue_mark_overdue_leads"
+        ],
+        
+            
+    },
+	# "all": [
+	# 	"advance_health.tasks.all"
+	# ],
+	# "daily": [
+	# 	"advance_health.tasks.daily"
+	# ],
+	# "hourly": [
+	# 	"advance_health.tasks.hourly"
+	# ],
+	# "weekly": [
+	# 	"advance_health.tasks.weekly"
+	# ],
+	# "monthly": [
+	# 	"advance_health.tasks.monthly"
+	# ],
+}
 
 # Testing
 # -------
