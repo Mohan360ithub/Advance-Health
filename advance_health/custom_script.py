@@ -565,7 +565,7 @@ def mark_overdue_leads(batch_size=100):
             "Lead",
             filters={
                 "status": ["in", statuses_to_check],
-                "custom_created_at": ["<", threshold_time],
+                "custom_created_on": ["<", threshold_time],
                 "followed_up": 0
             },
             fields=["name"],
