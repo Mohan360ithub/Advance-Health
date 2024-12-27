@@ -573,3 +573,20 @@ def mark_overdue_leads(batch_size=100):
         )
 
     frappe.logger().info(f"Total {total_updated} lead(s) marked as Overdue.")
+
+
+
+import frappe
+
+@frappe.whitelist()
+def update_custom_lead_created_on():
+    """
+    Update custom_lead_created_on with the value of custom_created_on for all leads.
+    """
+    frappe.db.sql("""
+        UPDATE `tabLead`
+        SET `custom_lead_created_on` = `custom_created_on`
+        WHERE `custom_created_on` IS NOT NULL
+    """)
+    frappe.db.commit()
+    return "All records have been updated successfully!"
