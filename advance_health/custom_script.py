@@ -483,11 +483,12 @@ import frappe
 from frappe.utils import flt
 
 @frappe.whitelist()
-def create_sales_invoice(customer_id,quotation_id):
+def create_sales_invoice(customer_id,quotation_id,custom_lead_id=None,custom_lead_owner=None):
     # Create a new Sales Invoice document
     sales_invoice = frappe.new_doc('Sales Invoice')
     sales_invoice.customer = customer_id
-
+    sales_invoice.custom_lead_id = custom_lead_id
+    sales_invoice.custom_lead_owner = custom_lead_owner
     # Get items from Quotation (replace the hardcoded ID with dynamic input if necessary)
     quotation = frappe.get_doc('Quotation', quotation_id)
 
